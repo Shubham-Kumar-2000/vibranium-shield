@@ -106,7 +106,7 @@ const getFingerPrint = async (data) => {
 const getIpRate = async (data) => {
     const { ip } = data;
     if (!ip) return;
-    data.ipBlocked = Number(await DATABASE.get(`ip-${ip}`));
+    data.ipBlocked = Number((await DATABASE.get(`ip-${ip}`)) || 0);
     data.ipChecked = true;
     return;
 };
@@ -225,10 +225,10 @@ async function handleRequest(request) {
         fpBlocked: 0,
         ipBlocked: 0
     };
-    data.blocked = Math.max(data.fpBlocked, data.ipBlocked);
     await Promise.all(
         config.plugins.map((plugin) => plugins[plugin](data, request))
     );
+    data.blocked = Math.max(data.fpBlocked, data.ipBlocked);
     config.rules.forEach((rule) => rulesHandler[rule.type](data, rule));
     if (!data.server) {
         data.server = config.servers.Org;
