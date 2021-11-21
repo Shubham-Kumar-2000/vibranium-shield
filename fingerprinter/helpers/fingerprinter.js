@@ -3,18 +3,18 @@ const useragent = require('express-useragent');
 const GeoipLite = require('geoip-lite');
 
 const geoIp = (next, req) => {
-    const ip =req.body.ip;
+    const ip = req.body.ip;
 
     const geo = GeoipLite.lookup(ip);
     next(null, {
-        XgeoIp: geo || {},
+        XgeoIp: geo || {}
     });
 };
 exports.fingerprinter = Fingerprint({
     parameters: [
         geoIp,
-        function(next, req) {
+        function (next, req) {
             next(null, useragent.parse(req.body.userAgent));
-        },
-    ],
+        }
+    ]
 });
