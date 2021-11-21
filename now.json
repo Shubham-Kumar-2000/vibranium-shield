@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["bom1"],
+  "builds": [{ "src": "package.json", "use": "@vercel/node" },{ "src": "/api/*.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/", "dest": "/fingerprinter/bin/vercel.js" },{ "src": "/(.*)", "dest": "/fingerprinter/bin/vercel.js" }]
+}
