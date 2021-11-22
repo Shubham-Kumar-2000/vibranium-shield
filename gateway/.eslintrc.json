@@ -62,6 +62,7 @@
         "URL":true,
         "fetch":true,
         "DATABASE":true,
-        "Request":true
+        "Request":true,
+        "CONFIG":true
     }
 }

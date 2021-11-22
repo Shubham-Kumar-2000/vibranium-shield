@@ -1,63 +1,26 @@
 // eslint-disable-next-line no-unused-vars
-const config = {
-    MaxRequestLimit: 5,
-    ttl: 5 * 60,
-    DummyOrigin: 'www.google.com',
-    ReCaptcha: {
-        Key: '6LfllkwdAAAAAOhViqvGkXvM8AM7CV16vRKuHYZR',
-        Sceret: '6LfllkwdAAAAAAGTXniQVJb235LwdqEPucucaVHt'
-    },
-    AuthHeader: 'authorization',
-    InvalidOptions: {
-        keyStatus: [404, 407],
-        // pattern: '',
-        value: 2
-    },
-    plugins: [
-        'ReCaptcha',
-        'IP',
-        'FingerPrinter',
-        'Authorization',
-        'Invalid-Response'
-    ],
-    rules: [
-        {
-            type: 'Rate',
-            value: 1
-        },
-        {
-            type: 'ReCaptcha-limit',
-            // pattern: '',
-            value: 0.4
-        },
-        {
-            type: 'ReCaptcha-range',
-            // pattern: '',
-            max: 0.7,
-            min: 0.3,
-            value: 5
-        },
-        {
-            type: 'Auth-accept'
-            // pattern: ''
-        }
-        // {
-        //     type: 'Pattern',
-        //     // pattern: '',
-        //     server: ''
-        // }
-    ]
-};
-// TODO : is bot
-config.servers = {
-    Org: 'Original',
-    Dummy: 'Dummy'
+let config = null;
+
+const populateConfig = async () => {
+    config = JSON.parse(await CONFIG.get('data'));
+    config.servers = {
+        Org: 'Original',
+        Dummy: 'Dummy'
+    };
 };
 
-addEventListener('fetch', (event) => {
+// TODO : is bot
+
+addEventListener('fetch', async (event) => {
+    if (!config) return;
+    await populateConfig();
     event.respondWith(
         handleRequest(event.request).catch(
-            (err) => new Response(err.stack, { status: 500 })
+            (err) =>
+                new Response(JSON.stringify(err), {
+                    status: 500,
+                    statusText: err.message
+                })
         )
     );
 });
@@ -197,17 +160,21 @@ const rulesHandler = {
     Pattern: (data, rule) => {
         if (!shouldCheckRule(data, rule)) return;
         data.server = rule.server;
+    },
+    'Reject-Bot': (data, rule) => {
+        if (!shouldCheckRule(data, rule)) return;
+        if (data.fingerprint && data.fingerprint.isBot) {
+            data.server = config.servers.Dummy;
+        }
     }
 };
-// const
+
 /**
- * Many more examples available at:
- *   https://developers.cloudflare.com/workers/examples
  * @param {Request} request
  * @returns {Promise<Response>}
  */
 async function handleRequest(request) {
-    if (request.method === 'OPTIONS') {
+    if (config.AcceptedMethods.includes(request.method)) {
         return fetch(request);
     }
     const url = new URL(request.url);
