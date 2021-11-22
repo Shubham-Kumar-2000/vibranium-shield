@@ -11,9 +11,7 @@ const populateConfig = async () => {
 
 // TODO : is bot
 
-addEventListener('fetch', async (event) => {
-    if (!config) return;
-    await populateConfig();
+addEventListener('fetch', (event) => {
     event.respondWith(
         handleRequest(event.request).catch(
             (err) =>
@@ -174,6 +172,7 @@ const rulesHandler = {
  * @returns {Promise<Response>}
  */
 async function handleRequest(request) {
+    if (!config) await populateConfig();
     if (config.AcceptedMethods.includes(request.method)) {
         return fetch(request);
     }

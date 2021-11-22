@@ -1,17 +1,17 @@
 module.exports = {
-    MaxRequestLimit: 5,
-    ttl: 5 * 60,
-    DummyOrigin: 'www.google.com',
+    MaxRequestLimit: 5, // Max request limit per ttl rr
+    ttl: 5 * 60, // time to live in seconds rr
+    DummyOrigin: 'www.google.com', // rr
     ReCaptcha: {
         Key: '6LfllkwdAAAAAOhViqvGkXvM8AM7CV16vRKuHYZR',
         Sceret: '6LfllkwdAAAAAAGTXniQVJb235LwdqEPucucaVHt'
     },
     AuthHeader: 'authorization',
-    AcceptedMethods: ['OPTIONS'],
+    AcceptedMethods: ['OPTIONS'], // rr
     InvalidOptions: {
         keyStatus: [404, 407],
         pattern: {
-            key: 'userAgent',
+            key: 'userAgent', //userAgent // url // path // domain // ip
             value: '*.'
         },
         value: 2
@@ -22,7 +22,7 @@ module.exports = {
         'FingerPrinter',
         'Authorization',
         'Invalid-Response'
-    ],
+    ], // rr
     rules: [
         {
             type: 'Rate',
@@ -44,10 +44,10 @@ module.exports = {
         },
         {
             type: 'Pattern',
-            server: ''
+            server: '' // Original or Dummy
         },
         {
             type: 'Reject-Bot'
         }
-    ]
+    ] // rr
 };
