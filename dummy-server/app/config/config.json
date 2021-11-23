@@ -1,0 +1,17 @@
+{
+  "main": {
+    "databaseUri": "mongodb+srv://jusp123:jusp123@cluster0.fdci6.mongodb.net/juspaySecurity?retryWrites=true&w=majority",
+    "secret": "234-5678-9876-5432-1012-3456-789",
+    "PORT": "3000"
+  },
+  "dummy": {
+    "databaseUri": "",
+    "secret": "j12-5678-9876-5432-1012-3456-789",
+    "PORT": "8080"
+  },
+  "development": {
+    "databaseUri": "mongodb+srv://jusp123:jusp123@cluster0.fdci6.mongodb.net/juspaySecurity?retryWrites=true&w=majority",
+    "secret": "234-5678-9876-5432-1012-3456-789",
+    "PORT": "5000"
+  }
+}
