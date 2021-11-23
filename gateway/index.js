@@ -178,12 +178,11 @@ async function handleRequest(request) {
     }
     const url = new URL(request.url);
     const domain = new URL(url).hostname;
-    const dummyUrl = url.toString().replace(domain, config.DummyOrigin);
     const data = {
         url,
         path: url.pathname,
         domain,
-        dummyUrl,
+        method: request.method,
         ip:
             request.headers.get('x-real-ip') ||
             request.headers.get('cf-connecting-ip'),
@@ -200,7 +199,16 @@ async function handleRequest(request) {
         data.server = config.servers.Org;
     }
     if (data.server === config.servers.Dummy) {
-        request = new Request(dummyUrl, request);
+        request = new Request(
+            url.toString().replace(domain, config.DummyOrigin),
+            request
+        );
+    }
+    if (data.server === config.servers.Org && config.Origin) {
+        request = new Request(
+            url.toString().replace(domain, config.Origin),
+            request
+        );
     }
 
     const response = fetch(request);

@@ -2,6 +2,7 @@ module.exports = {
     MaxRequestLimit: 5, // Max request limit per ttl rr
     ttl: 5 * 60, // time to live in seconds rr
     DummyOrigin: 'www.google.com', // rr
+    Origin: 'www.google.com',
     ReCaptcha: {
         Key: '6LfllkwdAAAAAOhViqvGkXvM8AM7CV16vRKuHYZR',
         Sceret: '6LfllkwdAAAAAAGTXniQVJb235LwdqEPucucaVHt'
@@ -11,7 +12,7 @@ module.exports = {
     InvalidOptions: {
         keyStatus: [404, 407],
         pattern: {
-            key: 'userAgent', //userAgent // url // path // domain // ip
+            key: 'userAgent', //userAgent // url // path // domain // ip // method
             value: '*.'
         },
         value: 2
