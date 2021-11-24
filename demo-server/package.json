@@ -24,9 +24,11 @@
     "morgan": "~1.9.1",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "serverless-http": "^2.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "serverless-functions-base-path": "^1.0.32"
   }
 }
