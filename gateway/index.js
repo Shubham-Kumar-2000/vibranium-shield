@@ -78,7 +78,14 @@ const getAuth = async (data, request) => {
 const shouldCheckRule = (data, rule) => {
     const { pattern } = rule;
     if (data.server) return false;
-    if (!pattern || !pattern.value || !pattern.key) return true;
+    if (
+        !pattern ||
+        !pattern.value ||
+        String(pattern.value).trim().length == 0 ||
+        !pattern.key ||
+        String(pattern.key).trim().length == 0
+    )
+        return true;
     const exp = new RegExp(pattern.value);
     if (exp.test(data[pattern.key])) {
         return true;
