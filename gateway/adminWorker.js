@@ -6,10 +6,18 @@ addEventListener('fetch', async (event) => {
     );
 });
 const handleRequest = async (request) => {
-    if (request.method != 'POST') {
-        return new Response('Not Found', { status: 404 });
+    if (request.method == 'POST') {
+        const data = await request.json();
+        await CONFIG.put(`data`, JSON.stringify(data));
+        return new Response('OK', { status: 200 });
     }
-    const data = await request.json();
-    await CONFIG.put(`data`, JSON.stringify(data));
-    return new Response('OK', { status: 200 });
+    if (request.method == 'GET') {
+        const data = await request.json();
+        await CONFIG.get(`data`);
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+    return new Response('Not Found', { status: 404 });
 };
