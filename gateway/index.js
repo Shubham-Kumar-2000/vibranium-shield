@@ -9,15 +9,18 @@ const populateConfig = async () => {
     };
 };
 
-// TODO : is bot
-
 addEventListener('fetch', (event) => {
     event.respondWith(
         handleRequest(event.request).catch(
             (err) =>
                 new Response(JSON.stringify(err), {
                     status: 500,
-                    statusText: err.message
+                    statusText: err.message,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+                        'Access-Control-Max-Age': '86400'
+                    }
                 })
         )
     );
