@@ -252,7 +252,7 @@ function App() {
       mode: "cors",
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
+      .then((res) => res.text())
       .then((res) => {
         console.log(res);
         setLoading(false);
