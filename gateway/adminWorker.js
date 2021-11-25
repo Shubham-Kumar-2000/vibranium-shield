@@ -6,7 +6,8 @@ const corsHeaders = {
 addEventListener('fetch', async (event) => {
     event.respondWith(
         handleRequest(event.request).catch(
-            (err) => new Response(err.stack, { status: 500 })
+            (err) =>
+                new Response(err.stack, { status: 500, headers: corsHeaders })
         )
     );
 });
@@ -47,9 +48,8 @@ const handleRequest = async (request) => {
         return new Response('OK', { status: 200, headers: corsHeaders });
     }
     if (request.method == 'GET') {
-        const data = await request.json();
-        await CONFIG.get(`data`);
-        return new Response(JSON.stringify(data), {
+        const data = await CONFIG.get(`data`);
+        return new Response(data, {
             status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
