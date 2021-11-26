@@ -16,6 +16,15 @@ router.get('/', (req, res, next) => {
 
 });
 
+router.get('/1', (req, res, next) => {
+
+  return res.status(200).json({
+    name: "Nem",
+    email: "nem@123.com"
+  });
+
+});
+
 router.post('/register',  (req, res) => {
   let data = req.body;
 
