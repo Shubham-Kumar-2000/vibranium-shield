@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "vibranium-sheild"
+  },
+  "targets": {
+    "vibranium-sheild": {
+      "hosting": {
+        "vb-admin": [
+          "vb-admin"
+        ]
+      }
+    }
+  }
+}

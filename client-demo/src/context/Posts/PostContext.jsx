@@ -25,26 +25,25 @@ export const GlobalPostProvider = ({ children }) => {
 
   const getPosts = async () => {
     const reCaptaToken = await getToken();
-    // await fetch(`${process.env.REACT_APP_BACKEND_API}/posts`, {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //     "x-recaptcha": reCaptaToken,
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     console.log(response);
-    //     const data = [...response];
-    //     dispatch({
-    //       type: "GET",
-    //       payload: data,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     enqueueSnackbar("Something went wrong", { variant: "default" });
-    //   });
+    await fetch(`${process.env.REACT_APP_BACKEND_API}/posts`, {
+      method: "GET",
+      headers: {
+        "x-recaptcha": reCaptaToken,
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        const data = [...response];
+        dispatch({
+          type: "GET",
+          payload: data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        enqueueSnackbar("Something went wrong", { variant: "default" });
+      });
   };
 
   const addPost = async (post) => {
