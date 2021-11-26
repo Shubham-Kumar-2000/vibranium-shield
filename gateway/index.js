@@ -107,8 +107,8 @@ const setInvalidResponse = async (data) => {
 const checkInvalidResponse = async (data, response) => {
     if (!data.checkInvalid) return;
     if (data.server !== config.servers.Org) return;
-    await response;
-    if (data.invalidKeyStatus.includes(response.status)) {
+    response = await response;
+    if (data.invalidKeyStatus.includes(String(response.status))) {
         data.blocked += data.incInvalid;
     }
 };
