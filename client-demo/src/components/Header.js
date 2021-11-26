@@ -23,10 +23,13 @@ const Header = () => {
             <li>
               <a>Posts</a>
             </li>
-            {!isAuthenticated && <PostDialog />}
+            {isAuthenticated && <PostDialog />}
           </ul>
 
-          <ul>{(!isAuthenticated || !isRegistered) && <AuthDialog />}</ul>
+          <ul>
+            {(!isAuthenticated || !isRegistered) && <AuthDialog />}
+            <li style={{ cursor: "pointer" }}>{isAuthenticated && "Logout"}</li>
+          </ul>
         </div>
       </nav>
     </header>

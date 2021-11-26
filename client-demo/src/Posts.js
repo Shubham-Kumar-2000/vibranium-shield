@@ -7,7 +7,7 @@ import PostContext from "./context/Posts/PostContext";
 
 const Posts = () => {
   const {
-    state: { isAuthenticated },
+    state: { isAuthenticated, token },
   } = useContext(AuthContext);
 
   const { posts, loading, getPosts } = useContext(PostContext);
@@ -23,7 +23,7 @@ const Posts = () => {
         <div className="posts">
           <h1>Post</h1>
 
-          {loading ? (
+          {loading && !token ? (
             <div className="loader-next">
               <Loader
                 type="Bars"
@@ -35,22 +35,34 @@ const Posts = () => {
             </div>
           ) : (
             posts.map((post) => {
-              const viewDate = new Date().toLocaleString("en-US", {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              });
+              const viewDate = new Date(post.createdAt).toLocaleString(
+                "en-US",
+                {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                }
+              );
               return (
-                <Paper className="article" key={post.id}>
+                <Paper className="article" key={post._id}>
                   <Avatar
                     src={`https://avatars.dicebear.com/api/bottts/${post.id}.svg`}
                   />
 
                   <h4>{post.title}</h4>
-                  <time dateTime={new Date()} className="postTime">
-                    <p>{viewDate}</p>
+                  <time
+                    dateTime={new Date(post.createdAt)}
+                    className="postTime"
+                  >
+                    <p style={{ fontSize: "0.8em" }}>
+                      Posted By:{" "}
+                      <span style={{ fontSize: "1rem", fontWeight: "bolder" }}>
+                        {post.createdBy}
+                      </span>
+                    </p>
+                    <p style={{ fontSize: "0.7em" }}>{viewDate}</p>
                   </time>
-                  <p>{post.body}</p>
+                  <p>{post.desc}</p>
                 </Paper>
               );
             })

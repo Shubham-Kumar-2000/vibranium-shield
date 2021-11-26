@@ -4,12 +4,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecaptaContext } from "./context/RecaptaContext";
+import { SnackbarProvider } from "notistack";
+import { GlobalAuthProvider } from "./context/Auth/AuthContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <RecaptaContext>
-      <App />
-    </RecaptaContext>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        horizontal: "center",
+        vertical: "top",
+      }}
+    >
+      <RecaptaContext>
+        <GlobalAuthProvider>
+          <App />
+        </GlobalAuthProvider>
+      </RecaptaContext>
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

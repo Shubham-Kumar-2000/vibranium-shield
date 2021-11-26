@@ -32,7 +32,7 @@ function App() {
     DummyOrigin: "",
     plugins: [],
     AcceptedMethods: [],
-    Authorization: undefined,
+    AuthHeader: undefined,
     ReCaptcha: {
       // key: "",
       // Sceret: "",
@@ -53,6 +53,106 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    await fetch(`${process.env.REACT_APP_WORKER_API}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const cfg = data;
+        const configData = {
+          MaxRequestLimit: cfg.MaxRequestLimit,
+          ttl: cfg.ttl,
+          DummyOrigin: cfg.DummyOrigin,
+          plugins: [...cfg.plugins],
+          AcceptedMethods: [...cfg.AcceptedMethods],
+          AuthHeader: cfg.AuthHeader,
+          ReCaptcha: { ...cfg.ReCaptcha },
+          InvalidOptions: {
+            keyStatus: cfg.InvalidOptions.keyStatus,
+            pattern: { ...cfg.InvalidOptions.pattern },
+            value: cfg.InvalidOptions?.value,
+          },
+        };
+        setConfig(configData);
+        console.log(data);
+        // setRules(data.rules);
+        handleRulesValues(data.rules);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleRulesValues = (r) => {
+    const rulesData = r.map((rule) => {
+      if (rule.type === "Auth-accept") {
+        return {
+          type: rule.type,
+          pattern: rule.pattern
+            ? { ...rule.pattern }
+            : {
+                key: "",
+                value: "",
+              },
+        };
+      }
+      if (rule.type === "Reject-Bot") {
+        return {
+          type: rule.type,
+          pattern: rule.pattern
+            ? { ...rule.pattern }
+            : {
+                key: "",
+                value: "",
+              },
+        };
+      }
+      if (rule.type === "Pattern") {
+        return {
+          type: rule.type,
+          server: rule.server,
+          pattern: rule.pattern
+            ? { ...rule.pattern }
+            : {
+                key: "",
+                value: "",
+              },
+        };
+      }
+      if (rule.type === "Rate" || rule.type === "ReCaptcha-limit") {
+        return {
+          type: rule.type,
+          value: rule.value,
+          pattern: rule.pattern
+            ? { ...rule.pattern }
+            : {
+                key: "",
+                value: "",
+              },
+        };
+      }
+      if (rule.type === "ReCaptcha-range") {
+        return {
+          type: rule.type,
+          value: rule.value,
+          min: rule.min,
+          max: rule.max,
+          pattern: rule.pattern
+            ? { ...rule.pattern }
+            : {
+                key: "",
+                value: "",
+              },
+        };
+      }
+    });
+    console.log(rulesData);
+    setRules(rulesData);
+  };
+
+  useEffect(() => {
     setInterval(() => {
       setDate(new Date());
     }, 1000);
@@ -61,7 +161,9 @@ function App() {
   const handleFeild = (e) => {
     setConfig({
       ...config,
-      [e.target.name]: e.target.value,
+      [e.target.name]: isNaN(e.target.value)
+        ? e.target.value
+        : parseInt(e.target.value),
     });
   };
 
@@ -93,7 +195,7 @@ function App() {
       ...config,
       InvalidOptions: {
         ...config.InvalidOptions,
-        keyStatus: value,
+        keyStatus: value.split(","),
       },
     });
   };
@@ -156,7 +258,7 @@ function App() {
     ttl,
     plugins,
     AcceptedMethods,
-    Authorization,
+    AuthHeader,
     ReCaptcha,
     InvalidOptions,
   } = config;
@@ -212,7 +314,7 @@ function App() {
 
     if (
       plugins.includes("ReCaptcha") &&
-      (!ReCaptcha || !ReCaptcha.Key || !ReCaptcha.Secret)
+      (!ReCaptcha.Key || !ReCaptcha.Sceret)
     ) {
       setLoading(false);
       enqueueSnackbar("Please enter reCaptcha key and secret", {
@@ -232,7 +334,7 @@ function App() {
       return;
     }
 
-    if (plugins.includes("Authorization") && !Authorization) {
+    if (plugins.includes("Authorization") && !AuthHeader) {
       enqueueSnackbar("Please enter Authorization headers", {
         variant: "default",
       });
@@ -385,7 +487,7 @@ function App() {
                       />
                       <Inputs
                         feild={"Time to live*"}
-                        value={ttl}
+                        value={parseInt(ttl)}
                         handleValue={handleFeild}
                         name={"ttl"}
                         number
@@ -429,9 +531,9 @@ function App() {
                     {plugins.indexOf("Authorization") > -1 && (
                       <Inputs
                         feild={"Authrizaton header"}
-                        value={Authorization}
+                        value={AuthHeader}
                         handleValue={handleFeild}
-                        name={"Authorization"}
+                        name={"AuthHeader"}
                       />
                     )}
                   </div>

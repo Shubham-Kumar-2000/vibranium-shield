@@ -19,7 +19,7 @@ const Accordion = styled((props) => (
 }));
 
 export default function ReCaptaConfig({
-  ReCaptcha: { Key, Secret },
+  ReCaptcha: { Key, Sceret },
   handleRecaptaChange,
 }) {
   const [expanded, setExpanded] = React.useState(true);
@@ -43,7 +43,7 @@ export default function ReCaptaConfig({
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Add Key and Secret of your reCapta V3</Typography>
+          <Typography>Add Key and Sceret of your reCapta V3</Typography>
         </AccordionSummary>
         <AccordionDetails
           style={{
@@ -57,10 +57,10 @@ export default function ReCaptaConfig({
             name={"Key"}
           />
           <Inputs
-            feild={"Backend key(Secret)"}
-            value={Secret}
+            feild={"Backend key(Sceret)"}
+            value={Sceret}
             handleValue={handleRecaptaChange}
-            name={"Secret"}
+            name={"Sceret"}
           />
         </AccordionDetails>
       </Accordion>
