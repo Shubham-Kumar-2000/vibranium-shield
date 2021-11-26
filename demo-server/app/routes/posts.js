@@ -4,7 +4,7 @@ let Post = require('../models/post');
 let auth = require('../middlewares/authenticate');
 
 
-router.get('/', auth.verifyUser, function(req, res, next) {
+router.get('/',function(req, res, next) {
     Post.find().then((posts) => {
         return res.status(200).json(posts);
     }).catch((err) => {
