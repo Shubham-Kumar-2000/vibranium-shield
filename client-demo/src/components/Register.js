@@ -1,8 +1,10 @@
 import { Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 import React, { useContext, useState } from "react";
 import AuthContext from "../context/Auth/AuthContext";
 
 const Register = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { registerUser } = useContext(AuthContext);
   const [userData, setUserData] = useState({
     name: "",
@@ -17,7 +19,15 @@ const Register = () => {
     });
   };
 
+  const { email, name, password } = userData;
+
   const onSubmit = async () => {
+    if (email === "" || password === "" || name === "") {
+      enqueueSnackbar("Please fill all the fields", {
+        variant: "error",
+      });
+      return;
+    }
     await registerUser(userData);
   };
 

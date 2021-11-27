@@ -27,6 +27,7 @@ export default function SingleSelect({ value, handleValue, data }) {
           Pattern Key
         </InputLabel>
         <Select
+          style={{ color: "black !important" }}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={value}

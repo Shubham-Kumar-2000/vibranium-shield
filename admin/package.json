@@ -26,7 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "firebase deploy --only hosting:vb-admin"
+    "deploy": "yarn build && firebase deploy --only hosting:vb-admin"
   },
   "eslintConfig": {
     "extends": [

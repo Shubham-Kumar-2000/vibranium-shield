@@ -48,7 +48,12 @@ export const GlobalPostProvider = ({ children }) => {
 
   const addPost = async (post) => {
     const reCaptaToken = await getToken();
-    if (token) {
+    const POSTBODY = {
+      post: {
+        ...post,
+      },
+    };
+    if (reCaptaToken) {
       const config = {
         method: "POST",
         headers: {
@@ -56,17 +61,26 @@ export const GlobalPostProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
           "x-recaptcha": reCaptaToken,
         },
-        body: JSON.stringify(post),
+        body: JSON.stringify(POSTBODY),
       };
-      // await fetch(`${process.env.REACT_APP_BACKEND_API}/post/add`, config)
-      //   .then((response) => response.json())
-      //   .then((response) => {
-      //     console.log({ response });
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     enqueueSnackbar("Something went wrong", { variant: "default" });
-      //   });
+      await fetch(`${process.env.REACT_APP_BACKEND_API}/posts/add`, config)
+        .then((response) => response.json())
+        .then((response) => {
+          console.log({ response });
+          if (response.msg === "success") {
+            enqueueSnackbar("Post added successfully", { variant: "default" });
+            dispatch({
+              type: "ADD",
+              payload: [response.post],
+            });
+          } else {
+            enqueueSnackbar("Something went wrong", { variant: "default" });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          enqueueSnackbar("Something went wrong", { variant: "default" });
+        });
     } else {
       console.log("No token");
       enqueueSnackbar("Something went wrong", { variant: "default" });
