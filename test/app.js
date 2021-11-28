@@ -84,7 +84,7 @@ let failPatternCheck = (res) => {
 
     instance.get('/users?QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
         .then(function (response) {
-            if(response.headers.toString().includes('Main'))
+            if(!response.headers.toString().includes('Main'))
                 console.log('From MAIN SERVER');
             else console.log('From DUMMY SERVER');
             console.log(response)
@@ -146,7 +146,7 @@ let checkAuthHeader = (flag, res) => {
         axios.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
     instance.get('/users')
         .then(function (response) {
-            if(response.headers.toString().includes('Main'))
+            if(!response.headers.toString().includes('Main'))
                 console.log('From MAIN SERVER');
             else console.log('From DUMMY SERVER');
             res.write(response);
@@ -167,7 +167,7 @@ let failRejectBot = (res) => {
 
     instance.get('/users')
         .then(function (response) {
-            if(response.headers.toString().includes('Main'))
+            if(!response.headers.toString().includes('Main'))
                 console.log('From MAIN SERVER');
             else console.log('From DUMMY SERVER');
             console.log(response)
