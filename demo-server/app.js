@@ -9,8 +9,10 @@ let config = require('./app/config/config.json');
 let dbUri = config[process.env.SERVE].databaseUri;
 let passport = require('passport');
 let routerJunction = 'routes';
+let serveSource = "Main";
 if(process.env.SERVE === "dummy"){
     routerJunction = 'dummyRoutes';
+    serveSource = 'Dummy';
 }
 
 let indexRouter = require(`./app/${routerJunction}/index`);
@@ -29,6 +31,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req,res,next) => {
+    res.setHeader('Api_Source', serveSource);
+    next();
+})
 
 
 app.use(passport.initialize());

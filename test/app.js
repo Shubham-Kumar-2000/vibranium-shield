@@ -6,6 +6,8 @@ const https = require('https');
 const axios = require('axios');
 
 _EXTERNAL_URL = 'https://juspay.shubhamgeek.xyz/users';
+// _EXTERNAL_URL = 'http://localhost:4000/users';
+
 
 http.createServer( async (req, res) => {
         if(req.url === "/request"){
@@ -25,12 +27,11 @@ http.createServer( async (req, res) => {
             for(let i=0;i<20;i++) {
                 console.log(i);
                 await sleep(3000);
-                await failStatus404((response, i) => {
+                await failStatus404((response, i, headers) => {
+                    if(headers.toString().includes('Main'))
+                        console.log('From MAIN SERVER');
+                    else console.log('From DUMMY SERVER');
                     console.log(response+" "+i)
-                    if(i===19) {
-                        sleep(3000);
-                        callMultiple(1, res);
-                    }
                     res.write(response);
                     res.end();
                 }, i)
@@ -60,7 +61,10 @@ http.createServer( async (req, res) => {
 async function callMultiple(n,res){
     for(let i=0;i<n;i++) {
         console.log(i);
-        callExternalApiUsingHttp(function (response) {
+        callExternalApiUsingHttp(function (response, headers) {
+            if(headers.toString().includes('Main'))
+                console.log('From MAIN SERVER');
+            else console.log('From DUMMY SERVER');
             console.log(response);
            // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
             res.write(response);
@@ -80,6 +84,9 @@ let failPatternCheck = (res) => {
 
     instance.get('/users?QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
         .then(function (response) {
+            if(response.headers.toString().includes('Main'))
+                console.log('From MAIN SERVER');
+            else console.log('From DUMMY SERVER');
             console.log(response)
             res.write(response.data.toString());
             res.end();
@@ -100,7 +107,7 @@ let callExternalApiUsingHttp = (callback) => {
 
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-            return callback(data);
+            return callback(data, resp.rawHeaders);
             // console.log(JSON.stringify(data));
         });
 
@@ -111,7 +118,7 @@ let callExternalApiUsingHttp = (callback) => {
 }
 
 let failStatus404 = async (callback, i) => {
-    https.get(_EXTERNAL_URL+i, (resp) => {
+    https.get(_EXTERNAL_URL+"/"+i, (resp) => {
         let data = '';
 
         // A chunk of data has been recieved.
@@ -121,7 +128,7 @@ let failStatus404 = async (callback, i) => {
 
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-            return callback(data, i);
+            return callback(data, i, resp.rawHeaders);
             // console.log(JSON.stringify(data));
         });
 
@@ -139,6 +146,9 @@ let checkAuthHeader = (flag, res) => {
         axios.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
     instance.get('/users')
         .then(function (response) {
+            if(response.headers.toString().includes('Main'))
+                console.log('From MAIN SERVER');
+            else console.log('From DUMMY SERVER');
             res.write(response);
             res.end();
         })
@@ -157,6 +167,9 @@ let failRejectBot = (res) => {
 
     instance.get('/users')
         .then(function (response) {
+            if(response.headers.toString().includes('Main'))
+                console.log('From MAIN SERVER');
+            else console.log('From DUMMY SERVER');
             console.log(response)
             res.write(response.data+"");
             res.end();
