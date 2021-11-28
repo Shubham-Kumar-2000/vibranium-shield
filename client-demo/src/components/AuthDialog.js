@@ -7,14 +7,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Register from "./Register";
 import Login from "./Login";
+import AuthContext from "../context/Auth/AuthContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AuthDialog() {
+  const { isRegistered } = React.useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [forSignUp, setForSignUp] = React.useState(true);
+  const [forSignUp, setForSignUp] = React.useState(isRegistered);
 
   const handleClickOpen = () => {
     setOpen(true);

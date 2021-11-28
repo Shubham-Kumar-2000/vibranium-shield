@@ -31,7 +31,22 @@ export const RecaptaContext = ({ children }) => {
   useEffect(() => {
     (async () => {
       const res = await HandleReCapta();
-      getToken();
+      const recapta = window.grecaptcha;
+      recapta.ready(async function () {
+        recapta
+          .execute(`${process.env.REACT_APP_RECAPTA_SITE_KEY}`, {
+            action: "homepage",
+          })
+          .then(function (token) {
+            setToken({
+              loading: false,
+              reCaptaToken: token,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     })();
   }, []);
 
@@ -39,20 +54,17 @@ export const RecaptaContext = ({ children }) => {
     console.log("getToken");
     let reCaptaToken = "";
     const recapta = window.grecaptcha;
-    await recapta.ready(async function () {
-      await recapta
-        .execute(`${process.env.REACT_APP_RECAPTA_SITE_KEY}`, {
-          action: "homepage",
-        })
-        .then(function (token) {
-          console.log("token", token);
-          reCaptaToken = token;
-          setToken({
-            loading: false,
-            reCaptaToken: token,
-          });
+    await recapta
+      .execute(`${process.env.REACT_APP_RECAPTA_SITE_KEY}`, {
+        action: "homepage",
+      })
+      .then(function (token) {
+        reCaptaToken = token;
+        setToken({
+          loading: false,
+          reCaptaToken: token,
         });
-    });
+      });
 
     return reCaptaToken;
   };

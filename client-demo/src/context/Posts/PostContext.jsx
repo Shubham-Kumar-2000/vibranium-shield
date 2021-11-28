@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useReducer } from "react";
+import AuthContext from "../Auth/AuthContext";
 import RecaptaContextProvider from "../RecaptaContext";
 import { PostReducer } from "./PostReducer";
+import { useSnackbar } from "notistack";
+
 const PostContext = createContext();
 
 export default PostContext;
@@ -13,51 +16,74 @@ const initialState = {
 };
 
 export const GlobalPostProvider = ({ children }) => {
-  //   const { enqueueSnackbar } = useSnackbar();
-  const { reCaptaToken, getToken } = useContext(RecaptaContextProvider);
+  const { enqueueSnackbar } = useSnackbar();
+  const { getToken } = useContext(RecaptaContextProvider);
+  const {
+    state: { token },
+  } = useContext(AuthContext);
   const [state, dispatch] = useReducer(PostReducer, initialState);
 
   const getPosts = async () => {
-    await fetch(`https://jsonplaceholder.typicode.com/posts`, {
+    const reCaptaToken = await getToken();
+    await fetch(`${process.env.REACT_APP_BACKEND_API}/posts`, {
       method: "GET",
       headers: {
-        "x-reCaptaV3": reCaptaToken,
+        "x-recaptcha": reCaptaToken,
       },
     })
       .then((response) => response.json())
       .then((response) => {
+        console.log(response);
         const data = [...response];
         dispatch({
           type: "GET",
-          payload: data.slice(0, 10),
+          payload: data,
         });
       })
       .catch((error) => {
         console.log(error);
+        enqueueSnackbar("Something went wrong", { variant: "default" });
       });
   };
 
   const addPost = async (post) => {
-    const token = reCaptaToken;
-    if (token) {
+    const reCaptaToken = await getToken();
+    const POSTBODY = {
+      post: {
+        ...post,
+      },
+    };
+    if (reCaptaToken) {
       const config = {
         method: "POST",
         headers: {
           "Content-type": "application/json",
-          "x-reCaptaV3": token,
+          Authorization: `Bearer ${token}`,
+          "x-recaptcha": reCaptaToken,
         },
-        body: JSON.stringify(post),
+        body: JSON.stringify(POSTBODY),
       };
-      await fetch(`${process.env.REACT_APP_BACKEND_API}/post`, config)
+      await fetch(`${process.env.REACT_APP_BACKEND_API}/posts/add`, config)
         .then((response) => response.json())
         .then((response) => {
           console.log({ response });
+          if (response.msg === "success") {
+            enqueueSnackbar("Post added successfully", { variant: "default" });
+            dispatch({
+              type: "ADD",
+              payload: [response.post],
+            });
+          } else {
+            enqueueSnackbar("Something went wrong", { variant: "default" });
+          }
         })
         .catch((error) => {
           console.log(error);
+          enqueueSnackbar("Something went wrong", { variant: "default" });
         });
     } else {
       console.log("No token");
+      enqueueSnackbar("Something went wrong", { variant: "default" });
     }
   };
 

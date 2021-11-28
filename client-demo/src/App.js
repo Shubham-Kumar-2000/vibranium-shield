@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import Loader from "react-loader-spinner";
 import "./App.css";
-import { GlobalAuthProvider } from "./context/Auth/AuthContext";
+import AuthContext, { GlobalAuthProvider } from "./context/Auth/AuthContext";
 import { GlobalPostProvider } from "./context/Posts/PostContext";
 import RecaptaContextProvider from "./context/RecaptaContext";
 import Posts from "./Posts";
 
 function App() {
-  const { token, loading } = useContext(RecaptaContextProvider);
-  return loading ? (
+  const { token } = useContext(AuthContext);
+  const { loading } = useContext(RecaptaContextProvider);
+  return loading && !token ? (
     <div className="initialLoader">
       <Loader
         type="Bars"
@@ -19,11 +20,9 @@ function App() {
       />
     </div>
   ) : (
-    <GlobalAuthProvider>
-      <GlobalPostProvider>
-        <Posts />
-      </GlobalPostProvider>
-    </GlobalAuthProvider>
+    <GlobalPostProvider>
+      <Posts />
+    </GlobalPostProvider>
   );
 }
 

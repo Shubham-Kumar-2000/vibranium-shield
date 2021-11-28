@@ -1,4 +1,3 @@
-//userAgent // url // path // domain // ip // method
 import * as React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -28,6 +27,7 @@ export default function SingleSelect({ value, handleValue, data }) {
           Pattern Key
         </InputLabel>
         <Select
+          style={{ color: "black !important" }}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={value}

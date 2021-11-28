@@ -65,7 +65,7 @@ export default function Plugins({ handleValue, value }) {
               }}
             />
           }
-          renderValue={(selected) => selected.join(", ")}
+          renderValue={(selected) => selected.join(" ,")}
           MenuProps={MenuProps}
         >
           {plugins.map((plug) => (

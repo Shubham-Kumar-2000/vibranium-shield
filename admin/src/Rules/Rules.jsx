@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Button, Chip, IconButton, Paper } from "@mui/material";
+import {
+  Button,
+  Chip,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+} from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Inputs from "../InputFeilds/Inputs";
@@ -13,6 +22,8 @@ const RULES = [
   "Pattern",
   "Reject-Bot",
 ];
+
+const ServerPattern = ["Original", "Dummy"];
 
 const Rules = ({ rules, handleRules }) => {
   const [rejectBot, setRejectBot] = useState({
@@ -254,12 +265,50 @@ const Rules = ({ rules, handleRules }) => {
                 />
               )}
               {item.type === "Pattern" && (
-                <Inputs
-                  feild={"server"}
-                  name={"server"}
-                  value={rules[index].server}
-                  handleValue={(e) => handlePatternChange(e, index)}
-                />
+                // <Inputs
+                //   feild={"server"}
+                //   name={"server"}
+                //   value={rules[index].server}
+                //   handleValue={(e) => handlePatternChange(e, index)}
+                // />
+                <Paper
+                  style={{
+                    backgroundColor: "rgba(46, 46, 46)",
+                    margin: "0.5rem",
+                    display: "flex",
+                    flexGrow: 1,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                  elevation={0}
+                >
+                  <p style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+                    {"Server"}
+                  </p>
+                  <FormControl sx={{ m: 1, width: 200 }}>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      style={{ color: "white" }}
+                    >
+                      Server
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={rules[index].server}
+                      label={"Server"}
+                      onChange={(e) => handlePatternChange(e, index)}
+                      name={"server"}
+                    >
+                      {ServerPattern.map((val) => (
+                        <MenuItem key={val} value={val}>
+                          {val}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Paper>
               )}
               {item.type === "ReCaptcha-range" && (
                 <div
@@ -295,10 +344,12 @@ const Rules = ({ rules, handleRules }) => {
                   />
                 </div>
               )}
-              <Pattern
-                pattern={rules[index].pattern}
-                handleInvalidOptionsPattern={(e) => handlePatChange(e, index)}
-              />
+              {
+                <Pattern
+                  pattern={rules[index].pattern}
+                  handleInvalidOptionsPattern={(e) => handlePatChange(e, index)}
+                />
+              }
             </CardContent>
           </Paper>
         ))}

@@ -6,7 +6,12 @@ import PostDialog from "./PostDialog";
 const Header = () => {
   const {
     state: { isAuthenticated, isRegistered },
+    dispatch,
   } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
 
   return (
     <header>
@@ -23,10 +28,18 @@ const Header = () => {
             <li>
               <a>Posts</a>
             </li>
-            {!isAuthenticated && <PostDialog />}
+            {isAuthenticated && <PostDialog />}
           </ul>
 
-          <ul>{(!isAuthenticated || !isRegistered) && <AuthDialog />}</ul>
+          <ul>
+            {(!isAuthenticated || !isRegistered) && <AuthDialog />}
+            {isAuthenticated && (
+              <li style={{ cursor: "pointer" }} onClick={() => handleLogout()}>
+                {" "}
+                Logout{" "}
+              </li>
+            )}
+          </ul>
         </div>
       </nav>
     </header>

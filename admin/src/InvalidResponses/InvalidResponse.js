@@ -30,6 +30,8 @@ export default function InvalidResponse({
   const toggle = () => {
     setExpanded(!expanded);
   };
+  // console.log({ pattern });
+
   return (
     <div
       style={{
@@ -57,7 +59,7 @@ export default function InvalidResponse({
         >
           <Inputs
             feild={"Http Status (comma saperated)"}
-            value={keyStatus}
+            value={keyStatus.join(",")}
             handleValue={handleInvalidOptionsKeyStatus}
             name={"Http Status (comma saperated)"}
           />

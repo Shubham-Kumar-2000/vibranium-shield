@@ -10,15 +10,28 @@ import SendIcon from "@mui/icons-material/Send";
 import { Paper } from "@mui/material";
 import RecaptaContextProvider from "../context/RecaptaContext";
 import PostContext from "../context/Posts/PostContext";
+import { useSnackbar } from "notistack";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
 export default function PostDialog() {
+  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  const { getToken } = useContext(RecaptaContextProvider);
   const { loading, addPost } = useContext(PostContext);
+  const [addPostData, setAddPostData] = useState({
+    title: "",
+    desc: "",
+    createdBy: "",
+  });
+
+  const onChange = (e) => {
+    setAddPostData({
+      ...addPostData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,9 +42,16 @@ export default function PostDialog() {
   };
 
   const handlePostSubmit = async () => {
-    const data = await getToken();
-    console.log({ data });
-    await addPost({});
+    if (
+      addPostData.title === "" ||
+      addPostData.desc === "" ||
+      addPostData.createdBy === ""
+    ) {
+      enqueueSnackbar("Please fill all the fields", { variant: "default" });
+      return;
+    }
+    await addPost(addPostData);
+    handleClose();
   };
 
   return (
@@ -53,8 +73,25 @@ export default function PostDialog() {
               className="input-res"
               placeholder={"Title"}
               autoFocus={true}
+              name={"title"}
+              onChange={onChange}
+              value={addPostData.title}
             />
-            <textarea className="input-res text-area" placeholder={"Body"} />
+            <textarea
+              className="input-res text-area"
+              placeholder={"Body"}
+              name={"desc"}
+              onChange={onChange}
+              value={addPostData.desc}
+            />
+            <input
+              className="input-res"
+              placeholder={"Created by"}
+              autoFocus={true}
+              name={"createdBy"}
+              onChange={onChange}
+              value={addPostData.createdBy}
+            />
             <div className="btnCont">
               <LoadingButton
                 onClick={() => handlePostSubmit()}
