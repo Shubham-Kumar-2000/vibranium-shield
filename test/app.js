@@ -165,11 +165,11 @@ let failRejectBot = (res) => {
     });
 
     instance.get('/users')
-        .then(function (response) {
+        .then(async function (response) {
             if(response.headers.toString().includes('Main'))
                 console.log('From MAIN SERVER');
             else console.log('From DUMMY SERVER');
-            console.log(response)
+            console.log(await response.text())
             res.write(response.data+"");
             res.end();
         })
