@@ -169,7 +169,7 @@ let failRejectBot = (res) => {
             if(response.headers.toString().includes('Main'))
                 console.log('From MAIN SERVER');
             else console.log('From DUMMY SERVER');
-            console.log(await response.text())
+            console.log( JSON.stringify(response.data,null,4));
             res.write(response.data+"");
             res.end();
         })
