@@ -146,14 +146,13 @@ let checkAuthHeader = (flag, res) => {
         axios.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
     instance.get('/users')
         .then(function (response) {
-            if(response.headers.toString().includes('Main'))
-                console.log('From MAIN SERVER');
-            else console.log('From DUMMY SERVER');
+            console.log('From DUMMY SERVER');
             res.write(response);
             res.end();
         })
         .catch((err) => {
             console.log("ERROR:"+err);
+            console.log('From MAIN SERVER');
         });
 }
 
