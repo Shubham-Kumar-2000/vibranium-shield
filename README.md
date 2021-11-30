@@ -29,14 +29,20 @@ You may find the setups of each section inside their respective `folders/README.
   <h2 align="center">Visitor's Count <img align="center" src="https://profile-counter.glitch.me/Shubham-Kumar-2000.vibranium-shield/count.svg" alt="Visitor Count" /></h2>
 </p>
 
-#### Live References for demo :
+### Live References for demo :
 
-Gateway hosted at : https://juspay.shubhamgeek.xyz/
-Admin Panel  : https://vb-admin.web.app/
+##### Main
 
-Finger Printer : https://juspay-shubham-kumar-2000.vercel.app/
-Admin worker hosted at : https://production.admin.unlink.workers.dev
+- Gateway hosted at : https://juspay.shubhamgeek.xyz/
+- Admin Panel  : https://vb-admin.web.app/
 
-Demo Client : https://vibranium-sheild.web.app/
-Demo Dummy Server hosted at : https://p805l9j9t1.execute-api.ap-south-1.amazonaws.com/prod
-Demo Original Server hosted at : 13.233.144.161
+##### Helpers
+
+- Finger Printer : https://juspay-shubham-kumar-2000.vercel.app/
+- Admin worker hosted at : https://production.admin.unlink.workers.dev
+
+##### Demo
+
+- Demo Client : https://vibranium-sheild.web.app/
+- Demo Dummy Server hosted at : https://p805l9j9t1.execute-api.ap-south-1.amazonaws.com/prod
+- Demo Original Server hosted at : 13.233.144.161
