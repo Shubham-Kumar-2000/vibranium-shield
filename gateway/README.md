@@ -26,3 +26,5 @@ To host this :
 
 This file contains a default configuration which can be saved by sending a post request to the admin domain / worker.
 
+You can read more about workers and cloudflare at : https://developers.cloudflare.com/docs
+
