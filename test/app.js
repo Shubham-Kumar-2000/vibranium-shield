@@ -28,11 +28,18 @@ http.createServer( async (req, res) => {
                 console.log(i);
                 await sleep(3000);
                 await failStatus404((response, i, headers) => {
-                    if(headers.toString().includes('Main'))
+                    let finalResponse = "";
+                    if(headers.toString().includes('Main')) {
                         console.log('From MAIN SERVER');
-                    else console.log('From DUMMY SERVER');
+                        finalResponse += "From MAIN SERVER";
+                    }
+                    else {
+                        console.log('From DUMMY SERVER');
+                        finalResponse += "From DUMMY SERVER";
+                    }
+                    finalResponse += "\n"+response;
                     console.log(response+" "+i)
-                    res.write(response);
+                    res.write(finalResponse);
                     res.end();
                 }, i)
             }
@@ -62,12 +69,19 @@ async function callMultiple(n,res){
     for(let i=0;i<n;i++) {
         console.log(i);
         callExternalApiUsingHttp(function (response, headers) {
-            if(headers.toString().includes('Main'))
+            let finalResponse = "";
+            if(headers.toString().includes('Main')) {
                 console.log('From MAIN SERVER');
-            else console.log('From DUMMY SERVER');
+                finalResponse+="From MAIN SERVER";
+            }
+            else {
+                console.log('From DUMMY SERVER');
+                finalResponse+="From DUMMY SERVER";
+            }
             console.log(response);
+            finalResponse+="\n"+response;
            // response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
-            res.write(response);
+            res.write(finalResponse);
             res.end()
         });
         await sleep(4000);
@@ -84,11 +98,18 @@ let failPatternCheck = (res) => {
 
     instance.get('/users?QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ')
         .then(function (response) {
-            if(response.headers.toString().includes('Main'))
+            let finalResponse = "";
+            if(response.headers.toString().includes('Main')) {
                 console.log('From MAIN SERVER');
-            else console.log('From DUMMY SERVER');
+                finalResponse += "From MAIN SERVER";
+            }
+            else {
+                console.log('From DUMMY SERVER');
+                finalResponse += "From DUMMY SERVER";
+            }
             console.log(JSON.stringify(response.data,null,4))
-            res.write(response.data.toString());
+            finalResponse += "\n" + response.data.toString();
+            res.write(finalResponse);
             res.end();
         })
         .catch((err) => {
@@ -166,11 +187,18 @@ let failRejectBot = (res) => {
 
     instance.get('/users')
         .then(async function (response) {
-            if(response.headers.toString().includes('Main'))
+            let finalResponse = "";
+            if(response.headers.toString().includes('Main')) {
+                finalResponse += "From MAIN SERVER";
                 console.log('From MAIN SERVER');
-            else console.log('From DUMMY SERVER');
+            }
+            else{
+                console.log('From DUMMY SERVER');
+                finalResponse += "From DUMMY SERVER";
+            }
             console.log( JSON.stringify(response.data,null,4));
-            res.write(response.data+"");
+            finalResponse += "\n"+response.data+""
+            res.write(finalResponse);
             res.end();
         })
         .catch((err) => {
