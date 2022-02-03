@@ -13,7 +13,7 @@
     "express-fingerprint": "^1.2.2",
     "express-useragent": "^1.0.15",
     "express-validation": "^3.0.8",
-    "geoip-lite": "^1.4.2",
+    "geoip-lite": "^1.4.3",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
   }
