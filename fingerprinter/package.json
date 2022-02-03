@@ -9,7 +9,7 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
-    "express": "~4.16.1",
+    "express": "~4.17.2",
     "express-fingerprint": "^1.2.2",
     "express-useragent": "^1.0.15",
     "express-validation": "^3.0.8",
