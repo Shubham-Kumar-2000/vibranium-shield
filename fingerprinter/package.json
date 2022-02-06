@@ -8,7 +8,7 @@
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
+    "ejs": "~2.7.4",
     "express": "~4.16.1",
     "express-fingerprint": "^1.2.2",
     "express-useragent": "^1.0.15",
