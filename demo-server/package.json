@@ -23,7 +23,7 @@
     "mongodb": "^4.3.0",
     "mongoose": "^6.0.13",
     "morgan": "~1.9.1",
-    "passport": "^0.5.0",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "serverless-http": "^2.7.0"
