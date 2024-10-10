@@ -10,14 +10,14 @@
     "devDummy": "cross-env SERVE=dummy nodemon ./bin/www"
   },
   "dependencies": {
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "~1.4.7",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
     "ejs": "~2.7.4",
-    "express": "~4.17.2",
+    "express": "~4.21.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.0",
