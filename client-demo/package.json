@@ -17,7 +17,7 @@
     "react-google-recaptcha-v3": "^1.9.7",
     "react-loader-spinner": "^4.0.0",
     "react-scripts": "5.0.0",
-    "universal-cookie": "^4.0.4",
+    "universal-cookie": "^7.2.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
